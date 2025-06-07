@@ -2,21 +2,30 @@ package config
 
 import (
 	"log"
+	"os"
 
 	"github.com/anything/smth/1/models"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/driver/sqlite"
-	_ "modernc.org/sqlite"  // <-- pure Go SQLite driver
 )
 
 var DB *gorm.DB
 
 func InitDB() {
-	var err error
-	DB, err = gorm.Open(sqlite.Open("file:mydb.db?cache=shared&mode=rwc"), &gorm.Config{})
+	dsn := os.Getenv("DATABASE_URL")
+	if dsn == "" {
+		log.Fatal("DATABASE_URL environment variable is not set")
+	}
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	DB.AutoMigrate(&models.Url{})
+	DB = db
+
+	err = DB.AutoMigrate(&models.Url{})
+	if err != nil {
+		log.Fatal("Failed to migrate database:", err)
+	}
 }
