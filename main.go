@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"log"
 
 	"github.com/anything/smth/1/config"
 	"github.com/anything/smth/1/controllers"
@@ -9,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/joho/godotenv"
 )
 
 // @title Url Shortener API
@@ -16,6 +18,10 @@ import (
 // @description url-shortener API
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("No .env file found")
+	}
 	config.InitDB()
 
 	r := gin.Default()
