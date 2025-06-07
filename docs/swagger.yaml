@@ -1,0 +1,79 @@
+definitions:
+  models.GetUrl:
+    properties:
+      url:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: url-shortener API
+  title: Url Shortener API
+  version: "1.0"
+paths:
+  /{id}:
+    get:
+      description: Redirects the user to the original long URL using the short code.
+      parameters:
+      - description: Shortened URL ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "301":
+          description: redirect
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Redirect to the original URL
+      tags:
+      - urls
+  /short-url:
+    post:
+      consumes:
+      - application/json
+      description: Accepts a long URL and returns a shortened one. If it exists, returns
+        the existing short URL.
+      parameters:
+      - description: Original URL
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.GetUrl'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Generate or retrieve a shortened URL
+      tags:
+      - urls
+swagger: "2.0"
