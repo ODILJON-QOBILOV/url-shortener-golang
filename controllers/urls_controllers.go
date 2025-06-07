@@ -44,7 +44,7 @@ func GetShortedUrl(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"id":           db_Url.Id,
 			"original_url": db_Url.Url,
-			"shorted_url":  "127.0.0.1:8080/" + db_Url.ShortedUrl,
+			"shorted_url":  "https://url-shortener-golang-production.up.railway.app/" + db_Url.ShortedUrl,
 		})
 		return
 	}
@@ -60,7 +60,7 @@ func GetShortedUrl(c *gin.Context) {
 	c.JSON(201, gin.H{
 		"id":           new_Url.Id,
 		"original_url": new_Url.Url,
-		"shorted_url":  "127.0.0.1:8080/" + new_Url.ShortedUrl,
+		"shorted_url":  "https://url-shortener-golang-production.up.railway.app/" + new_Url.ShortedUrl,
 	})
 }
 
