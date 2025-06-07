@@ -1,16 +1,17 @@
 package main
 
 import (
-	"os"
 	"log"
+	"os"
 
 	"github.com/anything/smth/1/config"
 	"github.com/anything/smth/1/controllers"
 	_ "github.com/anything/smth/1/docs"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/joho/godotenv"
 )
 
 // @title Url Shortener API
@@ -25,6 +26,8 @@ func main() {
 	config.InitDB()
 
 	r := gin.Default()
+
+	r.Use(cors.Default())
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
